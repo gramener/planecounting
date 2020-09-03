@@ -328,19 +328,19 @@ void error(const char *s)
 
 void malloc_error()
 {
-    fprintf(stderr, "xMalloc error - possibly out of CPU RAM \n");
+    fprintf(stderr, "xMalloc error\n");
     exit(EXIT_FAILURE);
 }
 
 void calloc_error()
 {
-    fprintf(stderr, "Calloc error - possibly out of CPU RAM \n");
+    fprintf(stderr, "Calloc error\n");
     exit(EXIT_FAILURE);
 }
 
 void realloc_error()
 {
-    fprintf(stderr, "Realloc error - possibly out of CPU RAM \n");
+    fprintf(stderr, "Realloc error\n");
     exit(EXIT_FAILURE);
 }
 
@@ -578,10 +578,12 @@ void mean_arrays(float **a, int n, int els, float *avg)
     int j;
     memset(avg, 0, els*sizeof(float));
     for(j = 0; j < n; ++j){
+        #pragma omp parallel for
         for(i = 0; i < els; ++i){
             avg[i] += a[j][i];
         }
     }
+    #pragma omp parallel for
     for(i = 0; i < els; ++i){
         avg[i] /= n;
     }
@@ -642,8 +644,8 @@ void normalize_array(float *a, int n)
     for(i = 0; i < n; ++i){
         a[i] = (a[i] - mu)/sigma;
     }
-    //mu = mean_array(a,n);
-    //sigma = sqrt(variance_array(a,n));
+    mu = mean_array(a,n);
+    sigma = sqrt(variance_array(a,n));
 }
 
 void translate_array(float *a, int n, float s)
@@ -1029,15 +1031,4 @@ int make_directory(char *path, int mode)
 #else
     return mkdir(path, mode);
 #endif
-}
-
-unsigned long custom_hash(char *str)
-{
-    unsigned long hash = 5381;
-    int c;
-
-    while (c = *str++)
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-
-    return hash;
 }

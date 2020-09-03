@@ -87,7 +87,7 @@ void test_super(char *cfgfile, char *weightfile, char *filename)
         if(filename){
             strncpy(input, filename, 256);
         }else{
-            printf("Enter Image Path: ");
+            printf("Enter Image Path_10: ");
             fflush(stdout);
             input = fgets(input, 256, stdin);
             if(!input) return;

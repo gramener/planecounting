@@ -82,7 +82,7 @@ void test_dice(char *cfgfile, char *weightfile, char *filename)
         if(filename){
             strncpy(input, filename, 256);
         }else{
-            printf("Enter Image Path: ");
+            printf("Enter Image Path_9: ");
             fflush(stdout);
             input = fgets(input, 256, stdin);
             if(!input) return;
